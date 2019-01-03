@@ -1,0 +1,31 @@
+/**********************************************************
+ * Author        : haibing.an
+ * Email         : haibing.an1991@gmail.com
+ * Last modified : 2019-01-03 13:49
+ * Filename      : README
+ * Description   : 关键点的描述
+ * *******************************************************/
+
+1.getopt
+	# getopt()函数的出处就是unistd.h
+	# int getopt(int argc,char * const argv[ ],const char * optstring);
+	# 返回值是int,但是可以转换成char，叫做选项字符
+	# extern char* optarg   保存选项的参数
+	  extern int optind     记录下一个检索位置
+	  extern int opterr     是否将错误信息输出到stderr，为0时表示不输出
+	  extern int optopt     不在选项字符串optstring中的选项
+	# "a:b:cd::e"，对应到命令行就是-a ,-b ,-c ,-d, -e，
+	  冒号表示参数：一个冒号表示选项后必带参(无参报错),但此参可和选项连写，也可空格隔开，如-a123和-a 123都表示123是a的参数;
+	  两个冒号表示选项参是可选的，可有可无，但有参数时与选项不能有空格(有报错).
+
+2./anbin -l111111 -panbin.txt	启动log并保存在文件中
+
+3.时间操作，例子是get_time_ms();详见：http://c.biancheng.net/cpp/u/hs4/
+	# asctime()	将时间日期以字符串格式表示
+	# ctime()	将时间日期以字符串格式表示
+	# gettimeofday()	获取当前时间
+	# gmtime()	获取当前时间和日期
+	# localtime()	获取当前时间和日期并转换为本地时间
+	# mktime()	将时间转换成经过的秒数
+	# settimeofday()	设置当前时间戳
+	# time()	获取当前时间(以秒数表示)
