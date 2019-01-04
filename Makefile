@@ -9,10 +9,9 @@ ifndef CFLAGS
 	endif
 
 TARGET = anbin
-OBJECTS = main.o slog.o
 
-$(TARGET): $(OBJECTS)
-	$(CC) -o $@ $^
+$(TARGET):
+	$(CC) -o $@ *.c *.h
 
 clean:
 	rm -f *.o *.d $(TARGET) *.o

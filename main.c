@@ -3,7 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "slog.h"
+#include "user_fifo.h"
+
 int main(int argc, char * argv[]) {
     int opt = 0;
     while ((opt = getopt(argc, argv, "l::p::gtwevh")) != -1) {
@@ -24,6 +25,7 @@ int main(int argc, char * argv[]) {
                 return -1;
         }
     }
+	unixFifoOps_t *fifoPtr = user_fifo_write_init("./anbinFIFO");
 
 	inf("this is inf");
 	war("this is war");
