@@ -52,3 +52,24 @@ int unix_fifo_ops_init(unixFifoOps_t* ptr){
 	return fd;
 }
 
+ssize_t unix_fifo_ops_write(unixFifoOps_t* ptr,char *buf,size_t size){
+	if(ptr->needlock)
+		pthread_mutex_lock(&ptr->mtx);
+	char *widx = buf;
+	size_t remSize = size;
+	ssize_t ret = 0;
+	for(; remSize>PIPE_BUF ;){
+		ret = un_write(ptr->fd, widx, PIPE_BUF);
+		if(ret < 0)
+			goto exit;
+		remSize -= PIPE_BUF;
+		widx += PIPE_BUF;
+	}
+	ret = un_write(ptr->fd, widx, remSize);
+	if(ret < 0)
+		goto exit;
+exit:
+	if(ptr->needlock)
+		pthread_mutex_unlock(&ptr->mtx);
+	return ret;
+}
