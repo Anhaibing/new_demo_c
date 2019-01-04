@@ -1,6 +1,13 @@
 #ifndef _SLOG_H_
 #define _SLOG_H_
 
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
+#include <stdarg.h>
+#include <pthread.h>
+#include <sys/time.h>
+
 #define Hgray   "\033[1;30m"
 #define Lgray   "\033[0;30m"
 #define Hred    "\033[1;31m"
@@ -75,5 +82,9 @@ void raw_log(
 #define dbg_nl(x...) 	dlog(_DBG,0,x);
 #define trc_nl(x...) 	dlog(_TRC,0,x);
 
-
+#define show_errno(ret, msg) ({\
+	int num=(ret);\
+	if(!num)num=errno;\
+	err("%s failure,errno:%d[%s]",msg,num,strerror(num));\
+})
 #endif
