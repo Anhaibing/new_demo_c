@@ -9,7 +9,7 @@
 #include <sys/file.h>
 #include <sys/stat.h>
 
-#include "slog.h"
+#include "../log/slog.h"
 
 typedef struct unixFifoOps_t{
     int fd;

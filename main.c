@@ -3,7 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "user_fifo.h"
+#include "./fifo/user_fifo.h"
 
 int main(int argc, char * argv[]) {
     int opt = 0;
