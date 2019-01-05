@@ -16,6 +16,7 @@ int fd_set_flag(int fd,int flag){
 
 
 unixFifoOps_t * unix_fifo_ops_create(const char * path, char needlock){
+	inf("%s", __func__);
 	unixFifoOps_t * ptr = calloc(1, sizeof(unixFifoOps_t));
 	if(!ptr) {
 		err("calloc failed");
@@ -71,5 +72,14 @@ ssize_t unix_fifo_ops_write(unixFifoOps_t* ptr,char *buf,size_t size){
 exit:
 	if(ptr->needlock)
 		pthread_mutex_unlock(&ptr->mtx);
+	return ret;
+}
+
+ssize_t unix_fifo_ops_read(unixFifoOps_t* ptr,char *buf,size_t size){
+	inf("%s", __func__);
+	ssize_t ret=un_read(ptr->fd,buf,size);
+	if(ret<0){
+		return -1;
+	}
 	return ret;
 }

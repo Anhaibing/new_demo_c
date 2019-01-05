@@ -25,17 +25,16 @@ int main(int argc, char * argv[]) {
                 return -1;
         }
     }
-	unixFifoOps_t *fifoPtr = user_fifo_write_init("./anbinFIFO");
+	unixFifoOps_t *fifoPtr = user_fifo_write_init("anbinFIFO");
 	if(!fifoPtr) {
 		err("user_fifo_write_init failed");
 		return -1;
 	}
-	user_fifo_write_fmt(fifoPtr,"anbintest 5");	//for test
-	inf("this is inf");
-	war("this is war");
-	err("this is err");
-	trc("this is inf");
-	dbg("this is dbg");
+	int i = 0;
+	for(i = 0; i < 10; i++){
+		user_fifo_write_fmt(fifoPtr,"anbintest %d", i);	//for test
+		sleep(1);
+	}
 
     return 0;
 }

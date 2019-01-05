@@ -2,6 +2,9 @@
 #define UNIX_FIFO_OPS_H_
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <pthread.h>
@@ -10,6 +13,7 @@
 #include <sys/stat.h>
 
 #include "../log/slog.h"
+#include "misc.h"
 
 typedef struct unixFifoOps_t{
     int fd;
@@ -47,10 +51,32 @@ typedef struct unixFifoOps_t{
 	count;\
 })
 
+#define un_read(fd,buf,size) ({\
+	inf("%s", __func__);\
+	ssize_t ret=0,count=0;\
+	for(;;){\
+		ret=read(fd,buf+count,size-count);\
+		if(ret>0)count+=ret;\
+		if(count==size){\
+			break;\
+		}\
+		if(errno==EINTR){\
+			show_errno(0,"read");\
+			continue;\
+		}\
+		if(ret<0 && errno!=EAGAIN){\
+			show_errno(0,"read");\
+		}\	
+		break;\
+	}\
+	count;\
+})
+
 int fd_set_flag(int fd,int flag);
 
 unixFifoOps_t * unix_fifo_ops_create(const char *path, char needlock);
 int unix_fifo_ops_init(unixFifoOps_t* ptr);
 ssize_t unix_fifo_ops_write(unixFifoOps_t* ptr,char *buf,size_t size);
+ssize_t unix_fifo_ops_read(unixFifoOps_t* ptr,char *buf,size_t size);
 
 #endif
