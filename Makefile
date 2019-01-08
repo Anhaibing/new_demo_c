@@ -1,19 +1,23 @@
-ifndef CC
-		CC=gcc
-	endif
+CC = gcc
 
-ifndef CFLAGS
-		CFLAGS=-MMD -O2 -Wall -g
-	else
-		CFLAGS += -I$(DIR_INC) -O2 -g
-	endif
+TARGET_M = master
+TARGET_S = slave
+DIR_INC = ./fifo ./log
+OBJECT = ./fifo/*.c ./log/*.c
 
-TARGET = anbin
+CFLAGS = -I$(DIR_INC) -O2
+LDFLAGS = -lpthread
 
-$(TARGET):
-	$(CC) -o $@ *.c *.h
+all: $(TARGET_M) $(TARGET_S)
+$(TARGET_M): $(OBJECT) test/master.c
+	@echo "Build $@..."
+	$(CC) -o $@ $^
+
+$(TARGET_S): $(OBJECT) test/slave.c
+	@echo "Build $@..."
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 clean:
-	rm -f *.o *.d $(TARGET) *.o
+	rm $(TARGET_M) $(TARGET_S)
 
-.PHONY: clean
+.PHONY:clean

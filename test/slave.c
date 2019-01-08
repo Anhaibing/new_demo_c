@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#include "./fifo/user_fifo.h"
+#include "../fifo/user_fifo.h"
 
 static int anbintest_handle(item_arg_t *arg){
 	char **argv=arg->argv;
