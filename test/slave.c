@@ -5,6 +5,29 @@
 #include <pthread.h>
 
 #include "../fifo/user_fifo.h"
+#include "../msgQueue/user_msgqueue.h"
+
+int msg_queue_test(){
+    int msgId = get_MsgQueue();
+    char buf[1024] = {0};
+    while(1){
+        inf("Please insert what you want to say");
+        fflush(stdout);
+        ssize_t count = read(0, buf, sizeof(buf));
+        if(count > 0){
+            buf[count-1] = 0;
+            send_MsgQueue(msgId, CLIENT_TYPE, buf);
+            if(strcasecmp("quit", buf) == 0)
+                break;
+            inf("send done,wait receive...");
+        }
+
+        recv_MsgQueue(msgId, SERVER_TYPE, buf);
+        inf("server say: %s", buf);
+    }
+
+    return 0;
+}
 
 static int anbintest_handle(item_arg_t *arg){
 	char **argv=arg->argv;
@@ -55,6 +78,8 @@ int main(int argc, char * argv[]) {
                 return -1;
         }
     }
+
+    msg_queue_test();
 
 	pthread_t thread[1];
 	pthread_attr_t a_thread_attr;

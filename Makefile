@@ -2,8 +2,8 @@ CC = gcc
 
 TARGET_M = master
 TARGET_S = slave
-DIR_INC = ./fifo ./log
-OBJECT = ./fifo/*.c ./log/*.c
+DIR_INC = ./fifo ./log ./msgQueue
+OBJECT = ./fifo/*.c ./log/*.c ./msgQueue/*.c
 
 CFLAGS = -I$(DIR_INC) -O2
 LDFLAGS = -lpthread
