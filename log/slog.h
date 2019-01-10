@@ -87,4 +87,26 @@ void raw_log(
 	if(!num)num=errno;\
 	err("%s failure,errno:%d[%s]",msg,num,strerror(num));\
 })
+
+//only print to console
+#define clog(color,fmt,args...) ({ \
+	FILE *fp = fopen("/dev/console", "a"); \
+	if(!fp)fp=stdout;\
+	fprintf(fp,"%s[%s %d]:\033[0m",color,get_last_name(__FILE__),__LINE__); \
+	fprintf(fp,fmt,##args); \
+	fprintf(fp,"\n"); \
+	if(fp!=stdout)fclose(fp); \
+})
+
+//user can special a out dev, example /dev/pts/0
+#define plog(path,fmt, args...) ({ \
+	FILE *fp = fopen(path,"a"); \
+	if (fp) { \
+		fprintf(fp,"[%s %d]",get_last_name(__FILE__),__LINE__); \
+		fprintf(fp,fmt,##args); \
+		fprintf(fp,"\n"); \
+		fclose(fp); \
+	} \
+})
+
 #endif
